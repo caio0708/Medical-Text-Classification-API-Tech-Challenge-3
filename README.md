@@ -1,43 +1,27 @@
-Decisão Arquitetural (Rascunho para o README)
+### Medical Text Classification API - Tech Challenge Fase 3
+Sistema de **triagem automática de laudos médicos** desenvolvido para classificar níveis de urgência em tempo real.
 
-A Etapa 1 exige uma definição textual da estratégia de deploy em nuvem para este cenário de triagem médica. 
+O projeto contempla uma arquitetura completa de produção, incluindo:
 
-Provedor Sugerido: AWS (Amazon Web Services).
+- API REST para classificação de laudos;
+- Pipeline de CI/CD;
+- Orquestração de treinamento;
+- Observabilidade com Prometheus e Grafana;
+- Inferência de Machine Learning otimizada com ONNX Runtime;
+- Containerização com Docker;
+- Arquitetura preparada para deploy em nuvem utilizando AWS.
 
-Estratégia Real-time vs Batch: Como o sistema é para triagem em um "hospital de referência" e necessita de classificação rápida, a arquitetura deve ser Real-time (tempo real).
+===
 
-Serviço de Deploy: Utilização do AWS ECS (Elastic Container Service) com AWS Fargate para rodar o container Docker criado sem a necessidade de gerenciar servidores subjacentes. 
-A API seria exposta via Application Load Balancer (ALB) para distribuir requisições e garantir alta disponibilidade. 
-Esta abordagem suporta picos de chamadas (ex: integração contínua do sistema do hospital) e simplifica o acoplamento futuro com o pipeline de CI/CD do GitHub Actions.  
+## Arquitetura de Deploy em Nuvem
 
-Baseline de latência:
-- Requisições: 100
-- Sucesso: 100%
-- Média: 7,98 ms
-- Mediana: 7,45 ms
-- Mínima: 2,60 ms
-- Máxima: 16,00 ms
-- P95: 12,79 ms
+Para atender a um hospital de referência com exigência de **triagem clínica imediata**, a arquitetura foi projetada com foco em **baixa latência, disponibilidade contínua e escalabilidade**.
 
----
+### Estratégia Real-time vs. Batch
 
+Foi adotado o modelo **Real-time**, utilizando uma API REST síncrona.
 
---- Resultados do Baseline de Latência (Local) ---
-Total de requisições bem-sucedidas: 100
-Latência Média: 9.50 ms
-Latência Mediana: 8.51 ms
-Latência Mínima: 0.00 ms
-Latência Máxima: 23.18 ms
-P95 (95% das requisições abaixo de): 18.85 ms
-=========
-
-Medical Text Classification API - Tech Challenge Fase 3
-Sistema de triagem automática de laudos médicos desenvolvido para classificar níveis de urgência em tempo real, contemplando pipeline de CI/CD, orquestração de treino, observabilidade com Prometheus/Grafana e otimização de latência com ONNX Runtime
-
-Decisão Arquitetural (Deploy em Nuvem):
-Para atender a um hospital de referência com exigência de triagem clínica imediata, a estratégia arquitetural foi desenhada com foco em baixa latência e disponibilidade contínua:
-
-Estratégia Real-time vs Batch: Adotou-se o modelo Real-time via API REST síncrona. O fluxo clínico exige resposta imediata ao submeter um laudo, descartando processamento em lote (batch).
+O fluxo clínico exige uma resposta imediata após o envio de um laudo para classificação. Dessa forma, o processamento em lote (**Batch**) não atende ao requisito de resposta imediata.
 
 Provedor de Nuvem: AWS (Amazon Web Services).
 
