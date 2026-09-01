@@ -1,0 +1,44 @@
+name: CI Pipeline - API Triagem
+
+# O workflow será acionado quando houver um push na branch main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Faz o checkout do código do repositório
+    - name: Checkout do Repositório
+      uses: actions/checkout@v3
+
+    # 2. Prepara o ambiente Python
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    # 3. Instala as dependências (API, lint e testes)
+    - name: Instalar Dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Executa o Linting com Flake8
+    - name: Rodar Linting (Flake8)
+      run: |
+        # O build falhará se houver erros graves de sintaxe
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Mostra alertas para complexidade e linhas muito longas, mas não quebra a esteira
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    # 5. Executa os Testes Automatizados
+    - name: Rodar Testes (Pytest)
+      run: |
+        pytest test_main.py -v
