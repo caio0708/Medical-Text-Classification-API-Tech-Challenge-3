@@ -7,3 +7,7 @@ flake8==6.1.0
 httpx==0.24.1
 prometheus-client==0.17.1
 requests
+skl2onnx
+pandas
+numpy==1.26.4
+onnxruntime==1.16.3

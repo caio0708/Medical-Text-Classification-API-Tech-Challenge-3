@@ -3,7 +3,7 @@ import time
 import statistics
 
 # Configurações do teste
-url = "http://localhost:8000/predict"
+url = "http://localhost:8001/predict"
 
 payload = {
     "texto": "Paciente relata dor torácica aguda e falta de ar. Histórico de hipertensão."
@@ -40,7 +40,8 @@ for i in range(num_requests):
         latencias.append(latencia_ms)
 
     else:
-        print(f"Erro na requisição {i + 1}: {response.status_code}")
+        print(f"Erro na requisição {i + 1}: {response.status_code} - Detalhes: {response.text}")
+        break # Interrompe o teste no primeiro erro para podermos ler a mensagem
 
 
 # Resultados
