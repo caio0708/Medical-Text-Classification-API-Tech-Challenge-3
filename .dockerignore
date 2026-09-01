@@ -1,0 +1,14 @@
+.git
+.gitignore
+.github
+.vscode
+.idea
+__pycache__
+*.pyc
+.venv
+venv
+env
+.env
+README.md
+teste_latencia.py
+data
