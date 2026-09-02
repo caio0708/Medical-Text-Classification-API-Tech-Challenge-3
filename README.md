@@ -27,9 +27,6 @@ Orquestração de Containers: Utilização do AWS ECS (Elastic Container Service
 
 Balanceamento e Escalabilidade: A API é exposta através de um Application Load Balancer (ALB) para distribuir o tráfego de forma equilibrada, garantindo alta disponibilidade e absorvendo picos de requisições provenientes de sistemas integrados do hospital. Esta estrutura acopla-se de forma fluida ao pipeline de CI/CD do GitHub Actions.
 
-Comparativo de Latência (Baseline vs. Otimizado)
-Os testes de carga foram executados simulando 100 requisições concorrentes em ambiente containerizado local. O escopo compara a API inicial (mock) com a API executando inferência real de Machine Learning otimizada via ONNX Runtime:
-
 ## Comparativo de Latência (Baseline vs. Otimizado)
 
 Os testes de latência foram executados em processo utilizando o script `comparar_latencia.py`, realizando 200 execuções com 10 interações de aquecimento (*warmup*), comparando diretamente o modelo serializado do scikit-learn (`.pkl`) contra o modelo otimizado com ONNX Runtime (`.onnx`).
