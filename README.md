@@ -11,8 +11,6 @@ O projeto contempla uma arquitetura completa de produção, incluindo:
 - Containerização com Docker;
 - Arquitetura preparada para deploy em nuvem utilizando AWS.
 
-===
-
 ## Arquitetura de Deploy em Nuvem
 
 Para atender a um hospital de referência com exigência de **triagem clínica imediata**, a arquitetura foi projetada com foco em **baixa latência, disponibilidade contínua e escalabilidade**.

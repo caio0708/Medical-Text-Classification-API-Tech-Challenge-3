@@ -25,8 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends patchelf \
 
 # 4. Copia o código da aplicação e os modelos
 COPY main.py .
-COPY modelo_otimizado.onnx .
-COPY modelo_original.pkl .
+COPY models/ ./models/
 
 EXPOSE 8001
 

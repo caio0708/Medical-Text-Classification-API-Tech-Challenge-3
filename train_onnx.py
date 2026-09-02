@@ -5,6 +5,7 @@ from sklearn.pipeline import Pipeline
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import StringTensorType
 import joblib
+import os
 
 # 1. Carregamento dos dados reais (medical_tc_train.csv)
 print("Carregando dataset...")
@@ -20,8 +21,11 @@ pipeline = Pipeline([
 ])
 pipeline.fit(X, y)
 
+# Garante que a pasta de destino existe
+os.makedirs('models', exist_ok=True)
+
 # Salva o modelo original (Scikit-Learn) para comparação de latência
-joblib.dump(pipeline, 'modelo_original.pkl')
+joblib.dump(pipeline, 'models/modelo_original.pkl')
 
 # 3. Conversão para ONNX
 print("Convertendo para ONNX...")
@@ -29,7 +33,7 @@ initial_type = [('texto_entrada', StringTensorType([None, 1]))]
 onnx_model = convert_sklearn(pipeline, initial_types=initial_type, target_opset=12)
 
 # Salva o modelo otimizado
-with open("modelo_otimizado.onnx", "wb") as f:
+with open("models/modelo_otimizado.onnx", "wb") as f:
     f.write(onnx_model.SerializeToString())
 
 print("Modelos salvos com sucesso!")

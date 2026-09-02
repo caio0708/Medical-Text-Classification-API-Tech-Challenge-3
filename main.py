@@ -34,8 +34,11 @@ class ClassificacaoResponse(BaseModel):
     tempo_processamento_ms: float
 
 # Inicializa a sessão do ONNX Runtime globalmente
+sess = None
+input_name = None
+label_name = None
 try:
-    sess = rt.InferenceSession("modelo_otimizado.onnx", providers=['CPUExecutionProvider'])
+    sess = rt.InferenceSession("models/modelo_otimizado.onnx", providers=['CPUExecutionProvider'])
     input_name = sess.get_inputs()[0].name
     label_name = sess.get_outputs()[0].name
 except Exception as e:
@@ -77,7 +80,10 @@ async def classificar_laudo(laudo: LaudoMedico):
     
     if not laudo.texto.strip():
         raise HTTPException(status_code=400, detail="O texto do laudo não pode ser vazio.")
-    
+
+    if sess is None:
+        raise HTTPException(status_code=503, detail="Modelo de classificação indisponível no momento.")
+
     try:
 
             x_input = np.array([laudo.texto], dtype=object).reshape(-1, 1)
