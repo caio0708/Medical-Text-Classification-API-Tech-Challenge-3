@@ -17,9 +17,9 @@ default_args = {
 }
 
 def ler_dados_csv():
-    """Lê o dataset de triagem médica diretamente do arquivo CSV e salva temporariamente para o treinamento[cite: 1]."""
+    """Lê o dataset de triagem médica diretamente do arquivo CSV e salva temporariamente para o treinamento."""
     print("Iniciando a leitura do dataset de treino...")
-    caminho_csv = 'data/medical_tc_train.csv'
+    caminho_csv = '/opt/airflow/data/medical_tc_train.csv'
     
     # Lê o dataset real em vez de usar mocks
     df = pd.read_csv(caminho_csv)
