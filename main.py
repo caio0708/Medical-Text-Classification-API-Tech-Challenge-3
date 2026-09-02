@@ -69,9 +69,12 @@ async def monitor_requests(request: Request, call_next):
     return response
 
 # Rota para expor os dados ao Prometheus
-@app.get("/metrics", include_in_schema=False)
+@app.get("/metrics")
 async def metrics():
-    return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST
+    )
 
 # Rota principal de predição
 @app.post("/predict", response_model=ClassificacaoResponse)

@@ -1,5 +1,5 @@
 # Imagem base leve recomendada para otimização de serviços
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # 1. Resolve o erro de idioma (Locale) exigido pelo conversor do ONNX
 RUN apt-get update && apt-get install -y locales && \
@@ -18,8 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 3. Resolve o erro de segurança do WSL2/Docker Desktop modificando o pacote recém-instalado
 # Ref: https://github.com/MolecularAI/aizynthfinder/issues/194
 RUN apt-get update && apt-get install -y --no-install-recommends patchelf \
-    && find /usr/local/lib/python3.9/site-packages/onnxruntime -name "*.so" \
-        -exec patchelf --clear-execstack {} \; \
+    && python3 -c "import site; import glob, subprocess; [subprocess.run(['patchelf', '--clear-execstack', p]) for p in glob.glob(site.getsitepackages()[0] + '/onnxruntime/**/*.so', recursive=True)]" \
     && apt-get purge -y --auto-remove patchelf \
     && rm -rf /var/lib/apt/lists/*
 

@@ -17,22 +17,16 @@ default_args = {
 }
 
 def ler_dados_csv():
-    """Lê o dataset de triagem médica e salva temporariamente para o treinamento."""
+    """Lê o dataset de triagem médica diretamente do arquivo CSV e salva temporariamente para o treinamento[cite: 1]."""
     print("Iniciando a leitura do dataset de treino...")
-    # Em produção, o caminho apontaria para o medical_tc_train.csv
-    # Mock de dados para garantir que a DAG rode sem dependências externas no teste inicial
-    dados_mock = pd.DataFrame({
-        'texto_laudo': [
-            'Paciente apresenta quadro de dor torácica aguda.',
-            'Exames de sangue de rotina dentro da normalidade.',
-            'Fratura exposta no membro superior direito, sangramento ativo.'
-        ],
-        'classe_urgencia': [2, 5, 1] 
-    })
+    caminho_csv = 'data/medical_tc_train.csv'
+    
+    # Lê o dataset real em vez de usar mocks
+    df = pd.read_csv(caminho_csv)
     
     caminho_tmp = '/tmp/dados_triagem.csv'
-    dados_mock.to_csv(caminho_tmp, index=False)
-    print(f"Dados consolidados e salvos em {caminho_tmp}")
+    df.to_csv(caminho_tmp, index=False)
+    print(f"Dados consolidados de {caminho_csv} e salvos em {caminho_tmp}")
 
 def treinar_e_salvar_modelo():
     """Treina o modelo de NLP e exporta o artefato."""
@@ -41,8 +35,9 @@ def treinar_e_salvar_modelo():
     
     print("Vetorizando os textos (TF-IDF)...")
     vectorizer = TfidfVectorizer(max_features=1000)
-    X = vectorizer.fit_transform(df['texto_laudo'])
-    y = df['classe_urgencia']
+    # Nota: Ajuste os nomes das colunas conforme a estrutura exata de 'medical_tc_train.csv'
+    X = vectorizer.fit_transform(df['text'].astype(str))
+    y = df['condition']
     
     print("Treinando classificador Random Forest...")
     modelo = RandomForestClassifier(n_estimators=50, random_state=42)
