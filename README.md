@@ -39,11 +39,11 @@ Os testes de latência foram executados em processo utilizando o script `compara
 | Métrica de Latência | Modelo Original (scikit-learn/.pkl) | Modelo Otimizado (ONNX Runtime) |
 |---|---:|---:|
 | Execuções | 200 | 200 |
-| Latência Média | 4,238 ms | **0,562 ms**[cite: 7] |
-| Latência Mediana | 4,420 ms | **0,555 ms**[cite: 7] |
-| Latência Mínima | 3,262 ms | **0,534 ms**[cite: 7] |
-| Latência Máxima | 6,434 ms | **0,676 ms**[cite: 7] |
-| Percentil 95 (P95) | 4,869 ms | **0,601 ms**[cite: 7] |
+| Latência Média | 4,238 ms | **0,562 ms** |
+| Latência Mediana | 4,420 ms | **0,555 ms** |
+| Latência Mínima | 3,262 ms | **0,534 ms** |
+| Latência Máxima | 6,434 ms | **0,676 ms** |
+| Percentil 95 (P95) | 4,869 ms | **0,601 ms** |
 
 ### Resumo Comparativo
-O modelo convertido para **ONNX Runtime** apresentou um ganho expressivo de performance, sendo **86,7% mais rápido em média** que o modelo original em scikit-learn, garantindo a baixa latência exigida para o sistema de triagem clínica em tempo real[cite: 7].
+O modelo convertido para **ONNX Runtime** apresentou um ganho expressivo de performance, sendo **86,7% mais rápido em média** que o modelo original em scikit-learn, garantindo a baixa latência exigida para o sistema de triagem clínica em tempo real.
