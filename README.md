@@ -67,4 +67,22 @@ A API FastAPI disponibiliza o endpoint `POST /predict` para classificação dos 
 
 Para realizar uma requisição manual via terminal:
 
+**Classe 1: Neoplasias (Câncer) 🩺**
+
+curl -X POST "http://localhost:8001/predict" -H "Content-Type: application/json" -d "{\"texto\": \"Histological examination revealed a malignant carcinoma with metastasis to the lymph nodes. The patient will undergo aggressive chemotherapy and radiation treatment for the tumor.\"}"
+
+**Classe 2: Doenças do Sistema Digestivo 🩺**
+
 curl -X POST "http://localhost:8001/predict" -H "Content-Type: application/json" -d "{\"texto\": \"The patient presents with severe gastrointestinal bleeding, acute hepatic failure, and gastric ulcers in the digestive tract.\"}"
+
+**Classe 3: Doenças do Sistema Nervoso 🧠**
+
+curl -X POST "http://localhost:8001/predict" -H "Content-Type: application/json" -d "{\"texto\": \"MRI of the brain shows lesions in the cerebral cortex consistent with multiple sclerosis and central nervous system degeneration causing frequent seizures.\"}"
+
+**Classe 4: Doenças Cardiovasculares ❤️**
+
+curl -X POST "http://localhost:8001/predict" -H "Content-Type: application/json" -d "{\"texto\": \"Acute myocardial infarction with left ventricular dysfunction, severe ischemia, and coronary artery disease requiring bypass surgery.\"}"
+
+**Classe 5 (Condições Patológicas Gerais) 🦠**
+
+curl -X POST "http://localhost:8001/predict" -H "Content-Type: application/json" -d "{\"texto\": \"The patient presented with a high fever, systemic inflammation, and elevated white blood cell count indicative of a severe bacterial infection. Antibiotics and intravenous fluids were administered to treat the generalized sepsis and metabolic instability.\"}"
