@@ -13,11 +13,11 @@ df = pd.read_csv('data/medical_tc_train.csv')
 X = df['medical_abstract'].values
 y = df['condition_label'].values
 
-# 2. Criação e Treinamento do Pipeline (TF-IDF + Random Forest)
-print("Treinando modelo...")
+# 2. Criação e Treinamento do Pipeline OTIMIZADO
+print("Treinando modelo (TF-IDF Otimizado + Random Forest Balanceado)...")
 pipeline = Pipeline([
-    ('tfidf', TfidfVectorizer(max_features=1000)),
-    ('clf', RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42))
+    ('tfidf', TfidfVectorizer(max_features=5000, stop_words='english', ngram_range=(1, 2))),
+    ('clf', RandomForestClassifier(n_estimators=100, class_weight='balanced', random_state=42, n_jobs=-1))
 ])
 pipeline.fit(X, y)
 

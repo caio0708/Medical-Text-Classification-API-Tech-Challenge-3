@@ -29,23 +29,27 @@ def ler_dados_csv():
     print(f"Dados consolidados de {caminho_csv} e salvos em {caminho_tmp}")
 
 def treinar_e_salvar_modelo():
-    """Treina o modelo de NLP e exporta o artefato."""
+    """Treina o modelo de NLP otimizado e exporta o artefato."""
+    from sklearn.pipeline import Pipeline
+    
     caminho_tmp = '/tmp/dados_triagem.csv'
     df = pd.read_csv(caminho_tmp)
     
-    print("Vetorizando os textos (TF-IDF)...")
-    vectorizer = TfidfVectorizer(max_features=1000)
-    # Nota: Ajuste os nomes das colunas conforme a estrutura exata de 'medical_tc_train.csv'
-    X = vectorizer.fit_transform(df['text'].astype(str))
-    y = df['condition']
+    print("Treinando Pipeline (TF-IDF + Random Forest Balanceado)...")
     
-    print("Treinando classificador Random Forest...")
-    modelo = RandomForestClassifier(n_estimators=50, random_state=42)
-    modelo.fit(X, y)
+    # Cria o pipeline idêntico ao exigido pelo conversor ONNX
+    pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer(max_features=5000, stop_words='english', ngram_range=(1, 2))),
+        ('clf', RandomForestClassifier(n_estimators=100, class_weight='balanced', random_state=42, n_jobs=-1))
+    ])
     
-    os.makedirs('/tmp/modelos', exist_ok=True)
-    caminho_modelo = '/tmp/modelos/modelo_triagem_v1.pkl'
-    joblib.dump({'vetorizador': vectorizer, 'modelo': modelo}, caminho_modelo)
+    # Treinamento com as colunas corretas
+    pipeline.fit(df['medical_abstract'].astype(str), df['condition_label'])
+    
+    # Salva na pasta mapeada para o Windows (/opt/airflow/models sincroniza com ./models)
+    os.makedirs('/opt/airflow/models', exist_ok=True)
+    caminho_modelo = '/opt/airflow/models/modelo_original.pkl'
+    joblib.dump(pipeline, caminho_modelo)
     print(f"Modelo treinado e salvo com sucesso em {caminho_modelo}")
 
 # Definição da DAG

@@ -44,3 +44,27 @@ Os testes de latência foram executados em processo utilizando o script `compara
 
 ### Resumo Comparativo
 O modelo convertido para **ONNX Runtime** apresentou um ganho expressivo de performance, sendo **86,7% mais rápido em média** que o modelo original em scikit-learn, garantindo a baixa latência exigida para o sistema de triagem clínica em tempo real.
+
+## Como Executar o Projeto Localmente
+
+Certifique-se de ter o Docker e o Docker Compose instalados na sua máquina.
+
+**1. Inicialize a infraestrutura completa**
+O comando abaixo fará o build da API e subirá simultaneamente o Prometheus, o Grafana e o Apache Airflow.
+
+docker compose up -d --build
+
+**2. Acesse os serviços integrados**
+
+API FastAPI: Acesse http://localhost:8001/docs para testar os endpoints de predição interativamente.
+
+Apache Airflow: Acesse http://localhost:8080 para visualizar a DAG de treinamento. Verifique as credenciais geradas usando docker logs airflow_standalone.
+
+Grafana (Dashboards): Acesse http://localhost:3000 (Login padrão: admin / Senha: admin). Os painéis de latência, taxa de erros e requisições já sobem provisionados automaticamente.
+
+**3. Exemplo de requisição manual**
+A API FastAPI disponibiliza o endpoint `POST /predict` para classificação dos laudos médicos.
+
+Para realizar uma requisição manual via terminal:
+
+curl -X POST "http://localhost:8001/predict" -H "Content-Type: application/json" -d "{\"texto\": \"The patient presents with severe gastrointestinal bleeding, acute hepatic failure, and gastric ulcers in the digestive tract.\"}"
