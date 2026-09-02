@@ -11,4 +11,3 @@ skl2onnx
 pandas
 numpy==1.26.4
 onnxruntime==1.16.3
-pytest
