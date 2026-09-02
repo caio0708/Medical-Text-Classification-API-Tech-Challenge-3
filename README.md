@@ -30,17 +30,20 @@ Balanceamento e Escalabilidade: A API é exposta através de um Application Load
 Comparativo de Latência (Baseline vs. Otimizado)
 Os testes de carga foram executados simulando 100 requisições concorrentes em ambiente containerizado local. O escopo compara a API inicial (mock) com a API executando inferência real de Machine Learning otimizada via ONNX Runtime:
 
-### Comparativo de Latência
+## Comparativo de Latência (Baseline vs. Otimizado)
 
-A tabela abaixo apresenta o comparativo de desempenho entre a API Mockada (Baseline) e o Modelo Otimizado utilizando ONNX, considerando 100 requisições realizadas para cada abordagem.
+Os testes de latência foram executados em processo utilizando o script `comparar_latencia.py`, realizando 200 execuções com 10 interações de aquecimento (*warmup*), comparando diretamente o modelo serializado do scikit-learn (`.pkl`) contra o modelo otimizado com ONNX Runtime (`.onnx`).
 
-| Métrica de Latência | Baseline (API Mockada) | Modelo Otimizado (ONNX) |
+### Resultados de Desempenho
+
+| Métrica de Latência | Modelo Original (scikit-learn/.pkl) | Modelo Otimizado (ONNX Runtime) |
 |---|---:|---:|
-| Requisições Bem-Sucedidas | 100 (100%) | 100 (100%) |
-| Latência Média | 7,98 ms | 9,50 ms |
-| Latência Mediana | 7,45 ms | 8,51 ms |
-| Latência Mínima | 2,60 ms | 0,00 ms |
-| Latência Máxima | 16,00 ms | 23,18 ms |
-| Percentil 95 (P95) | 12,79 ms | 18,85 ms |
+| Execuções | 200 | 200 |
+| Latência Média | 4,238 ms | **0,562 ms**[cite: 7] |
+| Latência Mediana | 4,420 ms | **0,555 ms**[cite: 7] |
+| Latência Mínima | 3,262 ms | **0,534 ms**[cite: 7] |
+| Latência Máxima | 6,434 ms | **0,676 ms**[cite: 7] |
+| Percentil 95 (P95) | 4,869 ms | **0,601 ms**[cite: 7] |
 
-O modelo otimizado com ONNX entrega inferências complexas de NLP (TF-IDF + Random Forest) mantendo a latência na faixa de milissegundos, atendendo com folga aos requisitos de sistemas clínicos críticos.
+### Resumo Comparativo
+O modelo convertido para **ONNX Runtime** apresentou um ganho expressivo de performance, sendo **86,7% mais rápido em média** que o modelo original em scikit-learn, garantindo a baixa latência exigida para o sistema de triagem clínica em tempo real[cite: 7].
